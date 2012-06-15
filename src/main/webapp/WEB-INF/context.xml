@@ -6,20 +6,22 @@
 		http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-3.0.xsd">
 
 	<bean id="messageSource"
-		class="org.springframework.context.support.ResourceBundleMessageSource"
+		class="com.blogspot.jmelon.portlet.quiz.context.LiferayFallingBackMessageSource"
 		p:basename="quiz" p:useCodeAsDefaultMessage="true" />
 
-<!-- more bulky alternative to bean name view resolver; left for knowledge -->
-<!-- 	<bean id="viewResolver" class="org.springframework.web.servlet.view.XmlViewResolver"> -->
-<!-- 		<property name="order" value="0" /> -->
-<!-- 	</bean> -->
+	<!-- more bulky alternative to bean name view resolver; left for knowledge -->
+	<!-- <bean id="viewResolver" class="org.springframework.web.servlet.view.XmlViewResolver"> -->
+	<!-- <property name="order" value="0" /> -->
+	<!-- </bean> -->
 
-    <bean id="viewResolver" class="org.springframework.web.servlet.view.BeanNameViewResolver">
-        <property name="order" value="0"/>
-    </bean>
-        
-    <bean name="jsonView" class="org.springframework.web.servlet.view.json.MappingJacksonJsonView">
-    </bean>
+	<bean id="viewResolver"
+		class="org.springframework.web.servlet.view.BeanNameViewResolver">
+		<property name="order" value="0" />
+	</bean>
+
+	<bean name="jsonView"
+		class="org.springframework.web.servlet.view.json.MappingJacksonJsonView">
+	</bean>
 
 	<bean id="internalResourceViewResolver"
 		class="org.springframework.web.servlet.view.InternalResourceViewResolver">
@@ -31,6 +33,9 @@
 	</bean>
 
 	<!-- Default ExceptionHandler -->
+	<!-- Thanks to LiferayFallingBackMessageSource, we are able to display generic, 
+		secure and standard error messages - even when we decide to override some 
+		liferay bundles! -->
 	<bean id="defaultExceptionHandler"
 		class="org.springframework.web.portlet.handler.SimpleMappingExceptionResolver">
 		<property name="order" value="15" />
@@ -38,7 +43,7 @@
 		<property name="exceptionMappings">
 			<props>
 				<prop key="javax.portlet.PortletSecurityException">unauthorized</prop>
-				<prop key="javax.portlet.UnavailableException">unavailable</prop>
+				<prop key="com.liferay.portal.security.auth.PrincipalException">unauthorized</prop>
 			</props>
 		</property>
 	</bean>

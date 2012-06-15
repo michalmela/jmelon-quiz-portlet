@@ -1,5 +1,5 @@
 <%--
-  Copyright 20012 the original author or authors.
+  Copyright 2012 the original author or authors.
  
   Licensed under the Apache License, Version 2.0 (the "License");
   you may not use this file except in compliance with the License.
@@ -16,15 +16,6 @@
 
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 
-<%@ taglib uri="http://java.sun.com/portlet" prefix="portlet" %>
-<%@ taglib uri="http://liferay.com/tld/theme" prefix="liferay-theme" %>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
- 
-<portlet:defineObjects />
-<liferay-theme:defineObjects/>
- 
-<c:set var="localTitle">portlet-setup-title-${locale}</c:set>
-
 <div class="message-error portlet-msg-error">
-    <spring:message code="is-temporarily-unavailable" arguments="${portletPreferencesValues[localTitle][0]}" />
+    <spring:message code="you-do-not-have-the-roles-required-to-access-this-portlet" />
 </div>

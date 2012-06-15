@@ -42,7 +42,6 @@ import com.liferay.portlet.journal.service.JournalTemplateLocalServiceUtil;
 /**
  * See the file "LICENSE" for the full license governing this code.
  * @author <a href="jmelon.blogspot.com">Michał Mela</a>
- * @
  */
 @Controller
 @RequestMapping("EDIT")
@@ -75,17 +74,17 @@ public class QuizEditController {
 		if(!model.containsAttribute(QUIZ_PREFS)) {
 			PortletPreferences portletPrefs = request.getPreferences();
 			String prefsJson = portletPrefs.getValue(QUIZ_PREFS, BLANK);
-			LOGGER.info("Marshalled quiz portlet prefs: {}", prefsJson);
+			LOGGER.debug("Marshalled quiz portlet prefs: {}", prefsJson);
 			
 			if(StringUtils.hasText(prefsJson)) {				
 				QuizPrefs quizPrefs = new ObjectMapper().readValue(prefsJson, QuizPrefs.class);
 				model.addAttribute(QUIZ_PREFS, quizPrefs);
-				LOGGER.info("Unarshalled quiz portlet prefs: {}",quizPrefs);
+				LOGGER.debug("Unmarshalled quiz portlet prefs: {}",quizPrefs);
 			} else {
-				LOGGER.info("No prefs set for quiz portlet at {}", ((ThemeDisplay) request.getAttribute(WebKeys.THEME_DISPLAY)).getURLCurrent());
+				LOGGER.debug("No prefs set for quiz portlet at {}", ((ThemeDisplay) request.getAttribute(WebKeys.THEME_DISPLAY)).getURLCurrent());
 			}
 		} else {
-			LOGGER.info("Prefs seem already set");
+			LOGGER.debug("Prefs seem already set");
 		}
 		
 
