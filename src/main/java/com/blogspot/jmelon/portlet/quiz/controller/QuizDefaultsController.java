@@ -92,12 +92,15 @@ public class QuizDefaultsController {
 
 	/**
 	 * Throws exception if a guy doesm't have permissions to access this portlet
+	 * 
+	 * note: themeDisplay.getPortletDisplay().getId() works just fine in view mode, but fails in resource mode for an unknown reason (returns empty string)
+	 * 
 	 * mode; no struts-related strange xmls required this way!
 	 */
 	private static void checkPermissions(PortletRequest request, String action) throws PortalException, SystemException {
 		ThemeDisplay themeDisplay = (ThemeDisplay) request.getAttribute(WebKeys.THEME_DISPLAY);
 		PermissionChecker permissionChecker = themeDisplay.getPermissionChecker();
 		PortletPermissionUtil.check(permissionChecker, themeDisplay.getPlid(),
-		        themeDisplay.getPortletDisplay().getId(), action);
+				request.getAttribute("PORTLET_ID").toString(), action);
 	}
 }

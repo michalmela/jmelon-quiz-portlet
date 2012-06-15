@@ -110,11 +110,17 @@
             <label for="${ns}quiz-edit-summary-tab-title"><spring:message code="edit.summary.tab.title"/></label>
             <input id="${ns}quiz-edit-summary-tab-title" name="summaryTabTitle" value="${quizPrefs.summaryTabTitle}"></value>
         </div>
-            <label for="${ns}quiz-edit-label-next"><spring:message code="edit.label.next"/></label>
-            <input id="${ns}quiz-edit-summary-next" name="nextLabel" value="${quizPrefs.nextLabel}"></value>
+        <div>
+            <label for="${ns}quiz-edit-label-reset"><spring:message code="edit.label.reset"/></label>
+            <input id="${ns}quiz-edit-summary-reset" name="resetLabel" value="${quizPrefs.resetLabel}"></value>
+        </div>
         <div>
             <label for="${ns}quiz-edit-label-prev"><spring:message code="edit.label.prev"/></label>
             <input id="${ns}quiz-edit-summary-prev" name="prevLabel" value="${quizPrefs.prevLabel}"></value>
+        </div>
+        <div>
+            <label for="${ns}quiz-edit-label-next"><spring:message code="edit.label.next"/></label>
+            <input id="${ns}quiz-edit-summary-next" name="nextLabel" value="${quizPrefs.nextLabel}"></value>
         </div>
         <div>
             <label for="${ns}quiz-edit-label-submit"><spring:message code="edit.label.submit"/></label>

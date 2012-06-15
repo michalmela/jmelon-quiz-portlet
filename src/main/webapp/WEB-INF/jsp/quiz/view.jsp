@@ -21,6 +21,22 @@
 </c:set>
 
 <c:choose>
+    <c:when test="${not empty prefs.resetLabel}">
+        <c:set var="resetLabel">${prefs.resetLabel}</c:set>
+    </c:when>
+    <c:otherwise>
+        <c:set var="resetLabel"><spring:message code="view.reset" /></c:set>
+    </c:otherwise>
+</c:choose>
+<c:choose>
+    <c:when test="${not empty prefs.prevLabel}">
+        <c:set var="prevLabel">${prefs.prevLabel}</c:set>
+    </c:when>
+    <c:otherwise>
+        <c:set var="prevLabel"><spring:message code="view.prev" /></c:set>
+    </c:otherwise>
+</c:choose>
+<c:choose>
     <c:when test="${not empty prefs.nextLabel}">
         <c:set var="nextLabel">${prefs.nextLabel}</c:set>
     </c:when>
@@ -28,6 +44,15 @@
         <c:set var="nextLabel"><spring:message code="view.next" /></c:set>
     </c:otherwise>
 </c:choose>
+<c:choose>
+    <c:when test="${not empty prefs.submitLabel}">
+        <c:set var="submitLabel">${prefs.submitLabel}</c:set>
+    </c:when>
+    <c:otherwise>
+        <c:set var="submitLabel"><spring:message code="view.submit" /></c:set>
+    </c:otherwise>
+</c:choose>
+
 
 <div class="quiz">
     <%-- Headers --%>
@@ -80,20 +105,20 @@
                 <div class="quiz-tab-content quiz-summary-content"></div>
             </div>
             <div class="quiz-buttons">
-                <button style="display:none" class="quiz-btn-prev">
-                    <div class="quiz-btn-img quiz-btn-img-prev"></div>
-                    <spring:message code="view.prev" />
-                </button>
                 <button style="display:none" class="quiz-btn-reset">
                     <div class="quiz-btn-img quiz-btn-img-reset"></div>
-                    <spring:message code="view.reset" />
+                    ${resetLabel}
+                </button>
+                <button style="display:none" class="quiz-btn-prev">
+                    <div class="quiz-btn-img quiz-btn-img-prev"></div>
+                    ${prevLabel}
                 </button>
                 <button ${fn:length(prefs.tabs) == 1 ? 'style="display:none"' : ''} disabled="disabled" class="quiz-btn-next">
                     ${nextLabel}
                     <div class="quiz-btn-img quiz-btn-img-next"></div>
                 </button>
                 <button ${fn:length(prefs.tabs) > 1 ? 'style="display:none"' : ''} class="quiz-btn-submit">
-                    <spring:message code="view.submit" />
+                    ${submitLabel}
                     <div class="quiz-btn-img quiz-btn-img-submit"></div>
                 </button>
             </div>

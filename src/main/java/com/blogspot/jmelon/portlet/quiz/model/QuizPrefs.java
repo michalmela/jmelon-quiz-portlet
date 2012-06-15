@@ -16,8 +16,9 @@ public class QuizPrefs {
 	private boolean randomizeAnswerOrder;
 	
 	private String summaryTabTitle;
-	private String nextLabel;
+	private String resetLabel;
 	private String prevLabel;
+	private String nextLabel;
 	private String submitLabel;
 	
 	@JsonIgnore
@@ -85,13 +86,22 @@ public class QuizPrefs {
     	this.submitLabel = submitLabel;
     }
 
+	public String getResetLabel() {
+	    return resetLabel;
+    }
+
+	public void setResetLabel(String resetLabel) {
+	    this.resetLabel = resetLabel;
+    }
+
 	@Override
     public String toString() {
 	    StringBuilder builder = new StringBuilder();
 	    builder.append("QuizPrefs [tabs=").append(tabs).append(", results=").append(results)
 	            .append(", randomizeAnswerOrder=").append(randomizeAnswerOrder).append(", summaryTabTitle=")
-	            .append(summaryTabTitle).append(", nextLabel=").append(nextLabel).append(", prevLabel=")
-	            .append(prevLabel).append(", submitLabel=").append(submitLabel).append("]");
+	            .append(summaryTabTitle).append(", resetLabel=").append(resetLabel).append(", prevLabel=")
+	            .append(prevLabel).append(", nextLabel=").append(nextLabel).append(", submitLabel=")
+	            .append(submitLabel).append("]");
 	    return builder.toString();
     }
 	
