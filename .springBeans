@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beansProjectDescription>
+	<version>1</version>
+	<pluginVersion><![CDATA[2.9.2.201205070117-RELEASE]]></pluginVersion>
+	<configSuffixes>
+		<configSuffix><![CDATA[xml]]></configSuffix>
+	</configSuffixes>
+	<enableImports><![CDATA[true]]></enableImports>
+	<configs>
+		<config>src/main/webapp/WEB-INF/context.xml</config>
+		<config>src/main/webapp/WEB-INF/quiz-portlet.xml</config>
+		<config>src/main/webapp/WEB-INF/views.xml</config>
+	</configs>
+	<configSets>
+	</configSets>
+</beansProjectDescription>
