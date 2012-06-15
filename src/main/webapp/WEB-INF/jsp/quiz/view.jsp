@@ -84,6 +84,10 @@
                     <div class="quiz-btn-img quiz-btn-img-prev"></div>
                     <spring:message code="view.prev" />
                 </button>
+                <button style="display:none" class="quiz-btn-reset">
+                    <div class="quiz-btn-img quiz-btn-img-reset"></div>
+                    <spring:message code="view.reset" />
+                </button>
                 <button ${fn:length(prefs.tabs) == 1 ? 'style="display:none"' : ''} disabled="disabled" class="quiz-btn-next">
                     ${nextLabel}
                     <div class="quiz-btn-img quiz-btn-img-next"></div>
@@ -104,6 +108,7 @@
     <script type="text/javascript">
     
 AUI().ready(function() {
+          $(".quiz-btn-reset").on("click",quizResetClick);
           $(".quiz-btn-prev").on("click",quizPrevClick);
           $(".quiz-btn-next").on("click",quizNextClick);
           $(".quiz-btn-submit").on("click",quizSubmitClick);
@@ -123,11 +128,12 @@ quizInputChange = function() {
     }
 }
 
-quizTabClick = function() {
+quizTabClick = function(event) {
     $this = $(this);
     var newIndex = $(this).index();
     if (!$this.hasClass("quiz-tab-header-selected")
-            && (newIndex == 0 || $this.prev().hasClass("quiz-tab-header-filled")) ) {
+            && (newIndex == 0 || $this.prev().hasClass("quiz-tab-header-filled"))
+            && !isQuizSubmitted()) {
         if (newIndex == $this.parent().children().size()-1) {
             submitQuiz();
         } else {            
@@ -138,7 +144,25 @@ quizTabClick = function() {
     }
 }
 
-quizPrevClick = function() {
+quizResetClick = function(event) {
+    event.preventDefault();
+    var cur = $(".quiz-tab-content-selected");
+    selectQuizTab(cur,0);
+    
+    var $tabs = $(".quiz-tab-headers").children();
+    var allTabs = $tabs.size();
+    
+    $(".quiz-btn-reset").hide();
+    if (allTabs > 2) {
+        $(".quiz-btn-next").show();
+    } else {
+        $(".quiz-btn-submit").show();    
+    }
+    $(".quiz-tab-header-filled").removeClass("quiz-tab-header-filled");
+    $(".quiz-answer-input").removeAttr("checked");
+}
+
+quizPrevClick = function(event) {
     event.preventDefault();
     var cur = $(".quiz-tab-content-selected");
     var curIndex = cur.index();
@@ -147,7 +171,7 @@ quizPrevClick = function() {
         selectQuizTab(cur,newIndex);
     }
 }
-quizSubmitClick = function() {
+quizSubmitClick = function(event) {
     event.preventDefault();
     var $tabs = $(".quiz-tab-headers").children();
     var allTabs = $tabs.size();
@@ -173,13 +197,24 @@ submitQuiz = function() {
          data: "answers="+answers, 
 //          contentType: 'application/json', 
          success: function(data) { 
+             $(".quiz-summary-content").html(data.content);
+             
+             var cur = $(".quiz-tab-content-selected");
+             var allTabs = cur.parent().children().size();
+             selectQuizTab(cur,allTabs-1);
+             
              <%-- TODO: error handling             alert(JSON.stringify(data));  --%>
-             $(".quiz-tab-content").html(data.content);
              $quiz.removeClass("lfr-configurator-visibility");
+
+             $(".quiz-btn-reset").show();
+             $(".quiz-btn-prev").hide();
+             $(".quiz-btn-next").hide();
+             $(".quiz-btn-submit").hide();
+             
          }
     });
 }
-quizNextClick = function() {
+quizNextClick = function(event) {
     event.preventDefault();
     var cur = $(".quiz-tab-content-selected");
     var curIndex = cur.index();
@@ -227,7 +262,11 @@ isTabAnswered = function(tab) {
     var allQuestions = tab.find(".quiz-question").size();
     return allQuestions == tab.find("input:checked").size();
 }       
-
+isQuizSubmitted = function() {
+    var cur = $(".quiz-tab-content-selected");
+    var allTabs = cur.parent().children().size();
+    return cur.index() == allTabs-1;
+}
 
 <%--
  * Copyright (c) 2010 Maxim Vasiliev

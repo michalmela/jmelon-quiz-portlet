@@ -67,7 +67,7 @@ public class QuizViewController {
 		PortletPreferences portletPrefs = request.getPreferences();
 		String prefsJson = portletPrefs.getValue(QUIZ_PREFS, BLANK);
 
-		LOGGER.info("Saved portlet preferences: {}", prefsJson);
+		LOGGER.debug("Saved portlet preferences: {}", prefsJson);
 
 		ObjectMapper om = new ObjectMapper();
 		QuizPrefs quizPrefs = om.readValue(prefsJson, QuizPrefs.class);

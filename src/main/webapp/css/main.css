@@ -112,6 +112,11 @@ h5.quiz-tab-header-filled {
     background-image:
         url("/html/themes/control_panel/images/arrows/paging_previous.png");
 }
+.quiz-btn-img-reset {
+    margin-right: 2px;
+    background-image:
+        url("/html/themes/control_panel/images/arrows/paging_first.png");
+}
 
 .quiz-btn-next, .quiz-btn-submit {
     float: right;

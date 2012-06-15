@@ -229,7 +229,7 @@ reorderResults = function($tabsOl) {
     })
 }
 
-addAnswerClick = function() {
+addAnswerClick = function(event) {
     event.preventDefault();
     var $this = $(this);
     var index = $this.siblings(".answers").children().size();
@@ -237,7 +237,7 @@ addAnswerClick = function() {
     $(answerTemplate.replace(/%name%/g,name)).appendTo($this.siblings(".answers"));
 }
 
-addQuestionClick = function() {
+addQuestionClick = function(event) {
     event.preventDefault();
     var $this = $(this);
     var index = $this.siblings(".questions").children().size();
@@ -245,7 +245,7 @@ addQuestionClick = function() {
     $(questionTemplate.replace(/%name%/g,name)).appendTo($this.siblings(".questions"));
 }
 
-addTabClick = function() {
+addTabClick = function(event) {
     event.preventDefault();
     var $this = $(this);
     var index = $this.siblings(".tabs").children().size();
@@ -253,7 +253,7 @@ addTabClick = function() {
     $(tabTemplate.replace(/%name%/g,name)).appendTo($this.siblings(".tabs"));
 }
 
-addResultClick = function() {
+addResultClick = function(event) {
     event.preventDefault();
     var $this = $(this);
     var index = $this.siblings(".results").children().size();
@@ -312,7 +312,7 @@ AUI().ready(
                 reorderResults($ol);
             });
             
-            $(".quiz-form").on("submit",function(e){
+            $(".quiz-form").on("submit",function(event){
                 event.preventDefault();
                 var url = "<portlet:resourceURL  id="savePrefs"></portlet:resourceURL>";  
                 

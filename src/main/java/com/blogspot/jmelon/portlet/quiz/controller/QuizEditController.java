@@ -97,12 +97,15 @@ public class QuizEditController {
 		BufferedReader requestReader = request.getReader();
 		String prefsJson = QuizPortletUtil.convertReaderToString(requestReader);
 		
+		LOGGER.info("Received marshalled quiz portlet prefs: {}", prefsJson);
+		
 		PortletPreferences portletPrefs = request.getPreferences();
 		portletPrefs.setValue(QUIZ_PREFS, prefsJson);
 		
 		try {
 	        portletPrefs.store(); // Preferences validator set in portlet.xml will validate it now
 	        model.addAttribute(RESOLUTION,SUCCESS);
+	        LOGGER.info("Quiz preferences saved");
         } catch (ValidatorException e) {
 	        LOGGER.error("Quiz portlet preferences could not be validated.",e);
 	        model.addAttribute(RESOLUTION,FAILED);
