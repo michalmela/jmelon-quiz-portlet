@@ -2,7 +2,7 @@
 <%@ taglib uri="http://java.sun.com/portlet_2_0" prefix="portlet" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 
-<%@ taglib uri="http://java.sun.com/portlet_2_0" prefix="portlet" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 
 <%@ taglib uri="http://liferay.com/tld/aui" prefix="aui"%>
 <%-- LFR-6.1.0 <%@ taglib uri="http://alloy.liferay.com/tld/aui" prefix="aui"%> --%>
@@ -78,29 +78,61 @@
     <fieldset>
         <legend><spring:message code="edit.results"/></legend>
         <ol class="results">
-            <li>
-            
-                <div>
-                    <label><spring:message code="edit.result.bound"/></label>
-                    <input disabled="disabled" name="results[0].bound" type="number" min="0" value="0"/>
-                </div>
-                <div>
-                    <label><spring:message code="edit.result.resultGroup"/></label>
-                    <select name="results[0].resultGroup">
-                        <option value="GLOBAL">global</option>
-                        <option value="SCOPE">scope</option>
-                    </select>
-                </div>
-                <div>
-                    <label><spring:message code="edit.result.resultArticleId"/></label>
-                    <input class="article-input" name="results[0].resultArticleId"/>
-                </div>
-                <div>
-                    <label><spring:message code="edit.result.resultTemplateId"/></label>
-                    <input class="article-input" name="results[0].resultTemplateId"/>
-                </div>
-                <button class="quiz-remove quiz-remove-result"><img class="btn-img" alt="" src="/html/themes/control_panel/images/common/delete.png"></button>
-            </li>
+            <c:choose>
+                <c:when test="${fn:length(quizPrefs.results) > 0}">
+                  <%-- there are some results saved - show them --%>
+                  <c:forEach var="result" items="${quizPrefs.results}" varStatus="rVs">
+                    <li>
+                        <c:set var="r" value="${rVs.index}"/>
+                        <div>
+                            <label><spring:message code="edit.result.bound"/></label>
+                            <input ${ r eq 0 ? 'disabled="disabled"' : ''} name="results[${r}].bound" type="number" min="0" value="${result.bound}"/>
+                        </div>
+                        <div>
+                            <label><spring:message code="edit.result.resultGroup"/></label>
+                            <select name="results[${r}].resultGroup">
+                                <option ${result.resultGroup eq 'GLOBAL' ? 'selected="selected"' : '' } value="GLOBAL">global</option>
+                                <option ${result.resultGroup eq 'SCOPE' ? 'selected="selected"' : '' } value="SCOPE">scope</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label><spring:message code="edit.result.resultArticleId"/></label>
+                            <input value="${result.resultArticleId}" class="article-input" name="results[${r}].resultArticleId"/>
+                        </div>
+                        <div>
+                            <label><spring:message code="edit.result.resultTemplateId"/></label>
+                            <input value="${result.resultTemplateId}" class="article-input" name="results[${r}].resultTemplateId"/>
+                        </div>
+                        <button class="quiz-remove quiz-remove-result"><img class="btn-img" alt="" src="/html/themes/control_panel/images/common/delete.png"></button>
+                    </li>
+                   </c:forEach>
+                </c:when>
+                <c:otherwise>
+                  <%-- no results saved so far - show default result inputs --%>
+                    <li>
+                        <div>
+                            <label><spring:message code="edit.result.bound"/></label>
+                            <input disabled="disabled" name="results[0].bound" type="number" min="0" value="0"/>
+                        </div>
+                        <div>
+                            <label><spring:message code="edit.result.resultGroup"/></label>
+                            <select name="results[0].resultGroup">
+                                <option value="GLOBAL">global</option>
+                                <option value="SCOPE">scope</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label><spring:message code="edit.result.resultArticleId"/></label>
+                            <input class="article-input" name="results[0].resultArticleId"/>
+                        </div>
+                        <div>
+                            <label><spring:message code="edit.result.resultTemplateId"/></label>
+                            <input class="article-input" name="results[0].resultTemplateId"/>
+                        </div>
+                        <button class="quiz-remove quiz-remove-result"><img class="btn-img" alt="" src="/html/themes/control_panel/images/common/delete.png"></button>
+                    </li>
+                </c:otherwise>
+            </c:choose>
         </ol>
         <button class="quiz-remove quiz-add-result"><img class="btn-img" alt="" src="/html/themes/control_panel/images/common/add.png"> <spring:message code="edit.add.result"/></button>
     </fieldset>
@@ -329,12 +361,13 @@ AUI().ready(
                     data: JSON.stringify( form2js("${ns}form"),".",false,null), 
                     contentType: 'application/json', 
                     success: function(data) { 
-                        alert(JSON.stringify(data));
+                           alert(data.resolution);
+<%--                         alert(JSON.stringify(data));--%>
                     } 
                 });
-                
-                alert(JSON.stringify( form2js("${ns}form",".",false,null) ));
-//                 alert(JSON.stringify( $("#${ns}form").toObject({mode:"all"}), null, '\t' ));
+<%--                
+//                 alert(JSON.stringify( form2js("${ns}form",".",false,null) ));
+//                 alert(JSON.stringify( $("#${ns}form").toObject({mode:"all"}), null, '\t' )); --%>
             });
         }
     );
