@@ -164,6 +164,7 @@ public class QuizViewController {
 			for (int i = 1; i < allResults.size(); i++) {
 				if (allResults.get(i).getBound() > points) {
 					result = allResults.get(i - 1);
+					break;
 				}
 			}
 			if (result == null) {

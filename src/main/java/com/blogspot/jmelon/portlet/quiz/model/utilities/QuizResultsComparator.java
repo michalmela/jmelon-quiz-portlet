@@ -12,7 +12,7 @@ public class QuizResultsComparator implements Comparator<QuizResult> {
 
 	@Override
     public int compare(QuizResult o1, QuizResult o2) {
-	    return Integer.compare(o1.getBound(), o2.getBound());
+	    return ((Integer)(o1.getBound())).compareTo(o2.getBound());
     }
 	
 }
