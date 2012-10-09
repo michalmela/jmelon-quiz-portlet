@@ -48,7 +48,7 @@
 		<profile>
 			<id>lfr-6.1.0</id>
 			<activation>
-				<activeByDefault />
+				<activeByDefault>false</activeByDefault>
 			</activation>
 			
 			<properties>

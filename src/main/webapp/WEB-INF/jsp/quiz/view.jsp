@@ -65,7 +65,7 @@
                 </h5>
             </c:when>
             <c:otherwise>
-                <h5 class="quiz-tab-header">${prefs.summaryTabTitle}</h5>
+                <h5 class="quiz-tab-header quiz-tab-summary-header">${prefs.summaryTabTitle}</h5>
             </c:otherwise>
         </c:choose>
     </div>
@@ -128,14 +128,55 @@
 <liferay-util:html-bottom>
 <%-- LFR-6.1.0 <liferay-util:body-bottom> --%>
     <script type="text/javascript">
-    
+var hashChangedByScript = false;
 AUI().ready(function() {
-          $(".quiz-btn-reset").on("click",quizResetClick);
-          $(".quiz-btn-prev").on("click",quizPrevClick);
-          $(".quiz-btn-next").on("click",quizNextClick);
-          $(".quiz-btn-submit").on("click",quizSubmitClick);
-          $(".quiz-answer-input").on("change",quizInputChange);
-          $(".quiz-tab-header").on("click",quizTabClick);
+    
+    $(".quiz-btn-reset").on("click",quizResetClick);
+    $(".quiz-btn-prev").on("click",quizPrevClick);
+    $(".quiz-btn-next").on("click",quizNextClick);
+    $(".quiz-btn-submit").on("click",quizSubmitClick);
+    $(".quiz-answer-input").on("change",quizInputChange);
+    $(".quiz-tab-header").on("click",quizTabClick);
+          
+    $(window).on("hashchange", function() {
+    	if (hashChangedByScript) {
+    		hashChangedByScript = false;
+    	} else {
+			var hashAnswers = window.location.hash.replace("#","").split(",");
+    		$(".quiz-question").each(function(i,e){
+    			if (hashAnswers[i] == "_") {
+    				$(e).find(".quiz-answer-input").attr("checked",false);
+    			} else {
+    				$($(e).find(".quiz-answer-input").get(hashAnswers[i])).attr("checked",true);
+    			}
+    		});
+    		
+    		var unansweredFound = false;
+    		$(".quiz-tab-content").each(function(i,e){
+    			var $e = $(e);
+    			if (!$e.hasClass("quiz-tab-summary-header")) {
+	    			if (unansweredFound) {
+	    				$e.find(".quiz-answer-input").attr("checked",false);
+	    				$($(".quiz-tab-header").get(i)).removeClass("quiz-tab-header-filled");
+	    			} else if (isTabAnswered($(e))) {
+	    				$($(".quiz-tab-header").get(i)).addClass("quiz-tab-header-filled");
+	    			} else {
+	    				unansweredFound = true;
+	    				$($(".quiz-tab-header").get(i)).removeClass("quiz-tab-header-filled");
+	    	            var cur = $(".quiz-tab-content-selected");
+	    	            var curIndex = cur.index();
+	    	            selectQuizTab(cur,i);
+	    			}
+    			}
+    		});
+    		if (!unansweredFound) {
+    			submitQuiz();
+    		} else {
+    			$(".quiz-btn-reset").hide();
+    		}
+    		
+    	}
+   	});
 })
 quizInputChange = function() {
     var cur = $(".quiz-tab-content-selected");
@@ -148,6 +189,20 @@ quizInputChange = function() {
             $selTabHead.addClass("quiz-tab-header-filled");
         }
     }
+
+    var answers = new Array();
+    $(".quiz-question").each(function(i,e){
+    	var $e = $(e);
+    	var checked = $e.find("input:checked");
+    	if(checked.length > 0) {
+        	answers.push($(checked).val());    		
+    	} else {
+    		answers.push("_");
+    	}
+
+    });
+    hashChangedByScript = true;
+    window.location.hash = answers;
 }
 
 quizTabClick = function(event) {
@@ -182,6 +237,9 @@ quizResetClick = function(event) {
     }
     $(".quiz-tab-header-filled").removeClass("quiz-tab-header-filled");
     $(".quiz-answer-input").removeAttr("checked");
+    
+    hashChangedByScript = true;
+    window.location.hash = "";
 }
 
 quizPrevClick = function(event) {
@@ -262,8 +320,8 @@ selectQuizTab = function(cur,newIndex) {
         $(".quiz-btn-next").removeAttr('disabled');
         $(".quiz-btn-submit").removeAttr('disabled');
     } else {
-        $(".quiz-btn-next").attr('disabled', '');
-        $(".quiz-btn-submit").attr('disabled', '');
+        $(".quiz-btn-next").attr('disabled', true);
+        $(".quiz-btn-submit").attr('disabled', true);
     }
     
 
